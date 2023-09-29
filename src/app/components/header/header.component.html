@@ -1,0 +1,37 @@
+<mat-toolbar class="max-w-7xl mx-auto border-x"> <!-- max-w-7xl: max width, mx-auto: l & r margin auto centre, border-x: adds some border-->
+    <a routerLink="/home">Webshop tutorial</a>
+    <span class="example-spacer"></span>
+    <button mat-icon-button [matMenuTriggerFor]="menu">  <!-- [matMenuTriggerFor] defines what it triggers, i.e. a menu -->
+        <mat-icon [matBadge]="itemsQuantity" [matBadgeHidden]="!itemsQuantity" matBadgeColor="warn">
+            shopping_cart
+        </mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">  <!-- this is the targetted menu from the button above, must be called #menu to match "menu" -->
+        <div class="p-3 divide-y divide-solid">  <!-- p-3: adds padding top, bottom, left and right, divide-y: adds a seperator between rows within the <div>, divide-solid: the separation to be solid -->
+            <div class="pb-3 flex justify-between"> <!-- pb-3: padding bottom, flex: set the div to display flex, justify-between: set them on the edges -->
+                <span class="mr-16">{{ itemsQuantity }} Items</span> <!-- mr-16: margin on the right side -->
+                <a routerLink="/cart">View Cart</a>
+            </div>
+            <div *ngIf="cart.items.length" class="py-3"> <!-- py-3: add padding on top and bottom (y direction) -->
+                <div *ngFor="let item of cart.items" class="flex justify-between font-light mb-2"> <!-- mb-2: set bottom margin -->
+                    {{ item.name }} x {{ item.quantity}}
+                    <span class="font-bold">{{ item.price | currency : "EUR" }}</span>
+                </div>
+            </div>
+            <div class="flex justify-between py-3 font-light">
+                Total:
+                <span class="font-bold">{{ getTotal(cart.items) | currency : "EUR" }}></span>
+            </div>
+            <div class="pt-4 flex justify-between"> <!-- pt-4 padding at top -->
+                <button (click)="onClearCart()" class="bg-rose-600 text-white rounded-full w-9 h-9"> <!-- bg-rose-600: set background colour, rounded-full: circular button, w-9: width of button, h-9: height -->
+                    <mat-icon>remove_shopping_cart</mat-icon>
+                </button>
+                <button
+                    routerLink = "/cart"
+                    class="bg-green-600 text-white rounded-full w-9 h-9">
+                    <mat-icon>shopping_cart_checkout</mat-icon>
+                </button>
+            </div>
+        </div>
+    </mat-menu>
+</mat-toolbar>
